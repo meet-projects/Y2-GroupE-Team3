@@ -27,6 +27,8 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 @app.route('/', methods=['GET', 'POST'])
 def signup():
     error = ""
+    # trying = {"userid":"secret","userName":"Fatma Azaizah","date":"01-08-2023","story":"my journy in lessan was very exciting, i learned aot of usefull things that helped me alot finding a higher paied job, and in general just meeting new people and developing relationship with israelis"}
+    # db.child("Posts").push(trying)
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -115,8 +117,7 @@ def posting():
 @app.route('/notalumni')
 def notalumni():
     try :
-        # trying = {"userid":"just check","userName":"nothing","date":"none","story":"none too"}
-        # db.child("Posts").push(trying)
+
         posts = db.child("Posts").get().val()
     except:
         ptint("nice")
