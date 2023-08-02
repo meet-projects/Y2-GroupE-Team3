@@ -1,20 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alumni Post</title>
 </head>
-<body>
-<P>
-	{{Pdict['date']}}
-</P>
-<img src = "{{Pdict['picture']}}">
-<P>
-	{{Pdict['userName']}}
-</P>
-<P>
-	{{Pdict['story']}}
-</P>
+<body style="background-color: purple;">
+    <style>
+        /* Additional CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            background: url('https://example.com/background-image.jpg') center/cover no-repeat fixed;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 50%;
+        }
+
+        .right-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #007BFF;
+            align-self: flex-start;
+        }
+
+        p {
+            margin: 5px 0;
+            line-height: 1.6;
+            align-self: flex-start;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+    </style>
+
+    <div class="content">
+        <div class="left-content">
+            <h1>Alumni Post</h1>
+            <p>{{ Pdict['date'] }}</p>
+            <img src="{{ Pdict['picture'] }}" alt="Alumni Picture">
+        </div>
+        <div class="right-content">
+            <p><strong>{{ Pdict['userName'] }}</strong></p>
+            <p>{{ Pdict['story'] }}</p>
+        </div>
+    </div>
+
 </body>
 </html>
