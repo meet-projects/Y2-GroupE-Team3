@@ -27,8 +27,9 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 @app.route('/', methods=['GET', 'POST'])
 def signup():
     error = ""
-    # trying = {"userid":"secret","userName":"Fatma Azaizah","date":"01-08-2023","story":"my journy in lessan was very exciting, i learned aot of usefull things that helped me alot finding a higher paied job, and in general just meeting new people and developing relationship with israelis"}
-    # db.child("Posts").push(trying)
+    UID = login_session['user']['localId']
+    trying = {"userid":UID,"userName":"Fatma Azaizah","date":"01-08-2023","story":"my journy in lessan was very exciting, i learned aot of usefull things that helped me alot finding a higher paied job, and in general just meeting new people and developing relationship with israelis"}
+    db.child("Posts").child(UID).set(trying)
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -109,20 +110,15 @@ def posting():
             date = request.form['date']
             story = request.form['story']
             post = {"userid":UID,"userName":userName,"date":date,"story":story,"picture":picture}
-
-            db.child("Posts").push(post)
+            db.child("Posts").child(UID).set(post)
             print("YOU HAVE REACHED HERE")
             return redirect(url_for('alumni'))
         return render_template("posting.html")
 
 @app.route('/notalumni')
 def notalumni():
-    try :
-
-        posts = db.child("Posts").get().val()
-    except:
-        ptint("nice")
-        posts = {}
+    posts = db.child("Posts").get().val()
+    print(db)
     return render_template("notalumni.html",posts = posts)
 
 @app.route('/signout')
@@ -131,7 +127,13 @@ def signout():
     auth.current_user = None
     return redirect(url_for('signin'))
 
+@app.route('/profile/<string:name>')
+def profile(name): 
+    UID = login_session['user']['localId']
+    Pdict = db.child("Posts").child(UID).get().val()
+    print(Pdict)
 
+    return render_template("profile.html",name = name,Pdict = Pdict)
 
 if __name__ == '__main__':
     app.run(debug=True)
