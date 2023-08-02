@@ -28,8 +28,8 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 def signup():
     error = ""
     UID = login_session['user']['localId']
-    trying = {"userid":UID,"userName":"Fatma Azaizah","date":"01-08-2023","story":"my journy in lessan was very exciting, i learned aot of usefull things that helped me alot finding a higher paied job, and in general just meeting new people and developing relationship with israelis"}
-    db.child("Posts").child(UID).set(trying)
+    # trying = {"userid":UID,"userName":"Fatma Azaizah","date":"01-08-2023","story":"my journy in lessan was very exciting, i learned aot of usefull things that helped me alot finding a higher paied job, and in general just meeting new people and developing relationship with israelis"}
+    # db.child("Posts").child(UID).set(trying)
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -97,7 +97,10 @@ def signin():
 @app.route('/alumni')
 def alumni(): 
     posts = db.child("Posts").get().val()
-    return render_template("alumni.html", posts=posts)
+    if posts != None:
+        return render_template("alumni.html", posts=posts)
+    else:
+        return render_template("alumni.html", posts=None)
 
 
 
@@ -110,7 +113,8 @@ def posting():
             date = request.form['date']
             story = request.form['story']
             post = {"userid":UID,"userName":userName,"date":date,"story":story,"picture":picture}
-            db.child("Posts").child(UID).set(post)
+            postref = db.child("Posts").child(UID).push(post)
+            db.child("Posts").child(UID).child(postref["name"]).update({"postid":postref["name"]})
             print("YOU HAVE REACHED HERE")
             return redirect(url_for('alumni'))
         return render_template("posting.html")
@@ -127,13 +131,13 @@ def signout():
     auth.current_user = None
     return redirect(url_for('signin'))
 
-@app.route('/profile/<string:name>')
-def profile(name): 
+@app.route('/profile/<string:postid>')
+def profile(postid): 
     UID = login_session['user']['localId']
-    Pdict = db.child("Posts").child(UID).get().val()
+    Pdict = db.child("Posts").child(UID).child(postid).get().val()
     print(Pdict)
 
-    return render_template("profile.html",name = name,Pdict = Pdict)
+    return render_template("profile.html", Pdict = Pdict)
 
 if __name__ == '__main__':
     app.run(debug=True)
