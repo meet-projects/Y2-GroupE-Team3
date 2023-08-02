@@ -105,9 +105,10 @@ def posting():
         if request.method == 'POST':
             UID = login_session['user']['localId']
             userName = request.form['username']
+            picture = request.form['picture']
             date = request.form['date']
             story = request.form['story']
-            post = {"userid":UID,"userName":userName,"date":date,"story":story}
+            post = {"userid":UID,"userName":userName,"date":date,"story":story,"picture":picture}
 
             db.child("Posts").push(post)
             print("YOU HAVE REACHED HERE")
